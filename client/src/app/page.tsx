@@ -75,20 +75,20 @@ const Page = () => {
     <div className="bg-gray-800 text-white min-h-screen flex flex-col items-center p-6 relative">
       <div className="absolute top-4 right-4 flex space-x-4">
         <a
-          href="https://www.linkedin.com/in/boris-faradian"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-400 hover:text-white transition-colors"
-        >
-          <FaLinkedin size={24} />
-        </a>
-        <a
           href="https://github.com/borisian/Ressit"
           target="_blank"
           rel="noopener noreferrer"
           className="text-gray-400 hover:text-white transition-colors"
         >
           <FaGithub size={24} />
+        </a>
+        <a
+          href="https://www.linkedin.com/in/boris-faradian"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-400 hover:text-white transition-colors"
+        >
+          <FaLinkedin size={24} />
         </a>
       </div>
 
@@ -205,13 +205,14 @@ const Page = () => {
                 </ul>
               </div>
             ))
-          : !noResults && (
-              <p className="mt-4 text-gray-500"></p>
-            )}
+          : !noResults && <p className="mt-4 text-gray-500"></p>}
       </div>
 
       <footer className="absolute bottom-4 text-gray-500 text-sm">
-        &copy; {new Date().getFullYear()} <a href="https://www.linkedin.com/in/boris-faradian" target="_blank">designed by me</a>
+        &copy; {new Date().getFullYear()}{" "}
+        <a href="https://www.linkedin.com/in/boris-faradian" target="_blank">
+          designed by me
+        </a>
       </footer>
     </div>
   );
