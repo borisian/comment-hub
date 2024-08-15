@@ -102,10 +102,10 @@ const Page = () => {
       </div>
 
       <h1 className="text-3xl font-bold mb-6">Ressit</h1>
-      <h3 className="text-2xl mb-6">
+      <h3 className="mb-6">
         One place to find the answers to your questions on Reddit.
       </h3>
-      <div className="w-full max-w-md space-y-4">
+      <div className="w-full max-w-md space-y-4 mt-4">
         <input
           type="text"
           value={query}
