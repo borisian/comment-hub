@@ -84,7 +84,7 @@ const Page = () => {
     <div className="bg-gray-800 text-white min-h-screen flex flex-col items-center p-6 relative">
       <div className="absolute top-4 right-4 flex space-x-4">
         <a
-          href="https://github.com/borisian/Ressit"
+          href="https://github.com/borisian/comment-hub"
           target="_blank"
           rel="noopener noreferrer"
           className="text-gray-400 hover:text-white transition-colors"

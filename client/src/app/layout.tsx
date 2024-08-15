@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Ressit",
+  title: "Comment Hub",
   description: "One place to find the answers to your questions on Reddit",
 };
 
