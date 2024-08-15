@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 const fetchComments = async (
   query: string,
@@ -71,10 +72,29 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-gray-800 text-white min-h-screen flex flex-col items-center p-6">
+    <div className="bg-gray-800 text-white min-h-screen flex flex-col items-center p-6 relative">
+      <div className="absolute top-4 right-4 flex space-x-4">
+        <a
+          href="https://www.linkedin.com/in/boris-faradian"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-400 hover:text-white transition-colors"
+        >
+          <FaLinkedin size={24} />
+        </a>
+        <a
+          href="https://github.com/borisian/Ressit"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-400 hover:text-white transition-colors"
+        >
+          <FaGithub size={24} />
+        </a>
+      </div>
+
       <h1 className="text-3xl font-bold mb-6">Ressit</h1>
       <h3 className="text-2l mb-6">
-      One place to find the answers to your questions on Reddit.
+        One place to find the answers to your questions on Reddit.
       </h3>
       <div className="w-full max-w-md space-y-4">
         <input
@@ -186,9 +206,13 @@ const Page = () => {
               </div>
             ))
           : !noResults && (
-              <p className="mt-4 text-gray-500">No results available</p>
+              <p className="mt-4 text-gray-500"></p>
             )}
       </div>
+
+      <footer className="absolute bottom-4 text-gray-500 text-sm">
+        &copy; {new Date().getFullYear()} <a href="https://www.linkedin.com/in/boris-faradian" target="_blank">designed by me</a>
+      </footer>
     </div>
   );
 };
