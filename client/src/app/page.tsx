@@ -8,7 +8,8 @@ const fetchComments = async (
   maxLength: number,
   minDate: string,
   maxDate: string,
-  numComments: number
+  numComments: number,
+  includeReplies: boolean
 ) => {
   const response = await fetch("/api/search", {
     method: "POST",
@@ -22,6 +23,7 @@ const fetchComments = async (
       minDate,
       maxDate,
       numComments,
+      includeReplies,
     }),
   });
 
@@ -39,11 +41,13 @@ const Page = () => {
   const [minDate, setMinDate] = useState("");
   const [maxDate, setMaxDate] = useState("");
   const [numComments, setNumComments] = useState(5);
+  const [includeReplies, setIncludeReplies] = useState(false);
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [noResults, setNoResults] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [showRepliesIndex, setShowRepliesIndex] = useState<number | null>(null);
 
   const handleSearch = async () => {
     setLoading(true);
@@ -57,7 +61,8 @@ const Page = () => {
         maxLength,
         minDate,
         maxDate,
-        numComments
+        numComments,
+        includeReplies
       );
       if (data.length === 0) {
         setNoResults(true);
@@ -69,6 +74,10 @@ const Page = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const toggleReplies = (index: number) => {
+    setShowRepliesIndex(showRepliesIndex === index ? null : index);
   };
 
   return (
@@ -93,7 +102,7 @@ const Page = () => {
       </div>
 
       <h1 className="text-3xl font-bold mb-6">Ressit</h1>
-      <h3 className="text-2l mb-6">
+      <h3 className="text-2xl mb-6">
         One place to find the answers to your questions on Reddit.
       </h3>
       <div className="w-full max-w-md space-y-4">
@@ -161,6 +170,17 @@ const Page = () => {
                 />
               </label>
             </div>
+            <div className="mt-1">
+              <label>
+                Show Replies:
+                <input
+                  type="checkbox"
+                  checked={includeReplies}
+                  onChange={(e) => setIncludeReplies(e.target.checked)}
+                  className="ml-2"
+                />
+              </label>
+            </div>
           </div>
         )}
         <button
@@ -200,6 +220,35 @@ const Page = () => {
                       <span className="text-sm text-gray-400">
                         Score: {comment.score}
                       </span>
+                      {includeReplies && comment.replies.length > 0 && (
+                        <div className="mt-2 pl-4">
+                          <button
+                            onClick={() => toggleReplies(index)}
+                            className="text-blue-400 text-sm"
+                          >
+                            {showRepliesIndex === index
+                              ? "Hide Replies"
+                              : "Show Replies"}
+                          </button>
+                          {showRepliesIndex === index && (
+                            <ul className="mt-2 border-t border-gray-700 pt-2">
+                              {comment.replies.map(
+                                (reply: any, rIndex: number) => (
+                                  <li
+                                    key={rIndex}
+                                    className="border-b border-gray-700 pt-2"
+                                  >
+                                    <p>{reply.body}</p>
+                                    <span className="text-sm text-gray-400">
+                                      Score: {reply.score}
+                                    </span>
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          )}
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>
