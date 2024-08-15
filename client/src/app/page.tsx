@@ -101,7 +101,7 @@ const Page = () => {
         </a>
       </div>
 
-      <h1 className="text-3xl font-bold mb-6">Ressit</h1>
+      <h1 className="text-3xl font-bold mb-6">Comment Hub</h1>
       <h3 className="mb-6">
         One place to find the answers to your questions on Reddit.
       </h3>
