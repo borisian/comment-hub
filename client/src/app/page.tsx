@@ -74,14 +74,14 @@ const Page = () => {
     <div className="bg-gray-800 text-white min-h-screen flex flex-col items-center p-6">
       <h1 className="text-3xl font-bold mb-6">Ressit</h1>
       <h3 className="text-2l mb-6">
-        Find all the answers to your questions, based on Reddit's comments.
+      One place to find the answers to your questions on Reddit.
       </h3>
       <div className="w-full max-w-md space-y-4">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Enter search query"
+          placeholder="Best brunch in Toronto..."
           className="bg-gray-700 text-white border-none rounded-md p-2 w-full"
         />
         <button
