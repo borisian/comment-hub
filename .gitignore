@@ -1,0 +1,4 @@
+
+server/config.py
+/server/venv
+/server/__pycache__
