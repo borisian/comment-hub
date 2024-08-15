@@ -1,13 +1,9 @@
-# TODO
-# Loading
-# Error message
-# Filter
-
 from flask import Flask, request, jsonify
 from googleapiclient.discovery import build
 from flask_cors import CORS
 import praw
 import config
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -22,6 +18,7 @@ reddit = praw.Reddit(
 # Initialize Google Custom Search
 service = build("customsearch", "v1", developerKey=config.GOOGLE_API_KEY)
 
+
 def search_reddit_posts(query):
     results = (
         service.cse()
@@ -31,42 +28,65 @@ def search_reddit_posts(query):
     urls = [item["link"] for item in results.get("items", [])]
     return urls
 
-def get_top_comments(post_url):
+
+def get_comments(post_url, num_comments, min_date, max_date):
     post_id = post_url.split("/")[-3]
     submission = reddit.submission(id=post_id)
 
-    # Retrieve the post title
     title = submission.title
-
     submission.comments.replace_more(limit=0)
-    top_comments = sorted(
-        submission.comments.list(), key=lambda x: x.score, reverse=True
-    )[:5]
-    comments = [{"body": comment.body, "score": comment.score} for comment in top_comments]
+    comments = sorted(submission.comments.list(), key=lambda x: x.score, reverse=True)
 
-    return title, comments
+    filtered_comments = []
+    for comment in comments[:num_comments]:
+        comment_date = datetime.fromtimestamp(comment.created_utc)
+        if min_date <= comment_date <= max_date:
+            filtered_comments.append({"body": comment.body, "score": comment.score})
+
+    return title, filtered_comments
+
 
 @app.route("/api/search", methods=["POST"])
 def search():
     data = request.json
     query = data.get("query", "")
+    min_length = data.get("minLength", 0)
+    max_length = data.get("maxLength", 1000)
+    min_date_str = data.get("minDate", "")
+    max_date_str = data.get("maxDate", "")
+    num_comments = data.get("numComments", 5)
+
     if not query:
         return jsonify({"error": "Query parameter is required"}), 400
 
     try:
+        min_date = (
+            datetime.fromisoformat(min_date_str) if min_date_str else datetime.min
+        )
+        max_date = (
+            datetime.fromisoformat(max_date_str) if max_date_str else datetime.max
+        )
+
         post_urls = search_reddit_posts(query)
         comments_by_post = []
 
         for url in post_urls:
-            title, top_comments = get_top_comments(url)
-            comments_by_post.append(
-                {"url": url, "title": title, "comments": top_comments}
-            )
+            title, top_comments = get_comments(url, num_comments, min_date, max_date)
+            filtered_comments = [
+                comment
+                for comment in top_comments
+                if min_length <= len(comment["body"]) <= max_length
+            ]
+            if filtered_comments:  # Only include posts with comments
+                comments_by_post.append(
+                    {"url": url, "title": title, "comments": filtered_comments}
+                )
 
         return jsonify(comments_by_post)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
