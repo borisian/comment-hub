@@ -82,27 +82,8 @@ const Page = () => {
 
   return (
     <div className="bg-gray-800 text-white min-h-screen flex flex-col items-center p-6 relative">
-      <div className="absolute top-4 right-4 flex space-x-4">
-        <a
-          href="https://github.com/borisian/comment-hub"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-400 hover:text-white transition-colors"
-        >
-          <FaGithub size={24} />
-        </a>
-        <a
-          href="https://www.linkedin.com/in/boris-faradian"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-400 hover:text-white transition-colors"
-        >
-          <FaLinkedin size={24} />
-        </a>
-      </div>
-
       <h1 className="text-3xl font-bold mb-6">Comment Hub</h1>
-      <h3 className="mb-6">
+      <h3 className="mb-6 text-center">
         One place to find the answers to your questions on Reddit.
       </h3>
       <div className="w-full max-w-md space-y-4 mt-4">
@@ -197,7 +178,7 @@ const Page = () => {
       {error && <p className="mt-4 text-red-500">{error}</p>}
       {noResults && <p className="mt-4 text-yellow-500">No posts found</p>}
 
-      <div className="mt-6 w-full max-w-4xl">
+      <div className="mt-6 w-full max-w-4xl mb-4">
         {results.length > 0
           ? results.map((post: any) => (
               <div
@@ -258,10 +239,24 @@ const Page = () => {
       </div>
 
       <footer className="absolute bottom-4 text-gray-500 text-sm">
-        &copy; {new Date().getFullYear()}{" "}
-        <a href="https://www.linkedin.com/in/boris-faradian" target="_blank">
-          designed by me
-        </a>
+        <div className="flex space-x-4">
+          <a
+            href="https://github.com/borisian/comment-hub"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-white transition-colors"
+          >
+            <FaGithub size={24} />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/boris-faradian"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-white transition-colors"
+          >
+            <FaLinkedin size={24} />
+          </a>
+        </div>
       </footer>
     </div>
   );
